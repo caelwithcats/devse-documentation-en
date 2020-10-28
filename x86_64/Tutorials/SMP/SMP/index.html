@@ -1,0 +1,1349 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation de DEVSE">
+      
+      
+      
+      <link rel="shortcut icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.0">
+    
+    
+      
+        <title>Symmetric Multi Processing - DEVSE - Wiki</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.bc7e593a.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab28b872.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../../../styles/syntax.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent="">
+      
+  
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#symmetric-multi-processing" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Header">
+    <a href="../../../.." title="DEVSE - Wiki" class="md-header-nav__button md-logo" aria-label="DEVSE - Wiki">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            DEVSE - Wiki
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              Symmetric Multi Processing
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/caelwithcats/devse-documentation-en/" title="Aller au dépôt" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="DEVSE - Wiki" class="md-nav__button md-logo" aria-label="DEVSE - Wiki">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    DEVSE - Wiki
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/caelwithcats/devse-documentation-en/" title="Aller au dépôt" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../.." class="md-nav__link">
+      DEVSE wiki english translation
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../../../../CONTRIBUER/" class="md-nav__link">
+      Contribuer au wiki
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Meta
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Meta" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Meta
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../../meta/template/" class="md-nav__link">
+      Article title
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      X86 64
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="X86 64" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        <span class="md-nav__icon md-icon"></span>
+        X86 64
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-1" type="checkbox" id="nav-4-1">
+    
+    <label class="md-nav__link" for="nav-4-1">
+      Devices
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Devices" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-1">
+        <span class="md-nav__icon md-icon"></span>
+        Devices
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../Devices/APIC/" class="md-nav__link">
+      Advanced Programmable Interrupt Controller
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../Devices/COM/" class="md-nav__link">
+      COM
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../Devices/LAPIC/" class="md-nav__link">
+      Local APIC
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../Devices/MADT/" class="md-nav__link">
+      Multiple APIC Description Table
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../Devices/PIC/" class="md-nav__link">
+      PIC
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../Devices/PIT/" class="md-nav__link">
+      PIT
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-2" type="checkbox" id="nav-4-2">
+    
+    <label class="md-nav__link" for="nav-4-2">
+      Structures
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Structures" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-2">
+        <span class="md-nav__icon md-icon"></span>
+        Structures
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../Structures/GDT/" class="md-nav__link">
+      Global Descriptor Table
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../Structures/IDT/" class="md-nav__link">
+      Interrupt Descriptor Table
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-3" type="checkbox" id="nav-4-3" checked>
+    
+    <label class="md-nav__link" for="nav-4-3">
+      Tutorials
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Tutorials" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-3">
+        <span class="md-nav__icon md-icon"></span>
+        Tutorials
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-3-1" type="checkbox" id="nav-4-3-1">
+    
+    <label class="md-nav__link" for="nav-4-3-1">
+      First steps
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="First steps" data-md-level="3">
+      <label class="md-nav__title" for="nav-4-3-1">
+        <span class="md-nav__icon md-icon"></span>
+        First steps
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../First%20steps/00-Introduction/" class="md-nav__link">
+      00 Introduction
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../First%20steps/01-Hello%2C%20World%21/" class="md-nav__link">
+      01 Hello, World!
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../First%20steps/02-Segmentation/" class="md-nav__link">
+      02 Segmentation
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../First%20steps/03-Interuption/" class="md-nav__link">
+      03 Interuption
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../First%20steps/04-Memoire/" class="md-nav__link">
+      04 Memoire
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../First%20steps/05-Pagination/" class="md-nav__link">
+      05 Pagination
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../First%20steps/06-Multit%C3%A2che/" class="md-nav__link">
+      06 Multitâche
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../First%20steps/07-T%C3%A2che%20Utilisateur/" class="md-nav__link">
+      07 Tâche Utilisateur
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../First%20steps/08-Epilogue/" class="md-nav__link">
+      08 Epilogue
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-3-2" type="checkbox" id="nav-4-3-2" checked>
+    
+    <label class="md-nav__link" for="nav-4-3-2">
+      SMP
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="SMP" data-md-level="3">
+      <label class="md-nav__title" for="nav-4-3-2">
+        <span class="md-nav__icon md-icon"></span>
+        SMP
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Symmetric Multi Processing
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" class="md-nav__link md-nav__link--active">
+      Symmetric Multi Processing
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-current-cpu-number" class="md-nav__link">
+    Get Current CPU Number
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#obtain-the-local-apic-entries" class="md-nav__link">
+    Obtain the Local APIC Entries
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-initialization" class="md-nav__link">
+    Pre-Initialization
+  </a>
+  
+    <nav class="md-nav" aria-label="Pre-Initialization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gdt-idt" class="md-nav__link">
+    GDT + IDT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stack" class="md-nav__link">
+    Stack
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trampoline-code" class="md-nav__link">
+    Trampoline Code
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jump-address" class="md-nav__link">
+    Jump address
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page-table-for-the-future-cpus" class="md-nav__link">
+    Page table for the future CPUs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loading-the-cpu" class="md-nav__link">
+    Loading the CPU
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#le-code-du-trampoline" class="md-nav__link">
+    Le Code Du Trampoline
+  </a>
+  
+    <nav class="md-nav" aria-label="Le Code Du Trampoline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#le-code-16-bits" class="md-nav__link">
+    Le Code 16-Bits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-code-32-bits" class="md-nav__link">
+    Le Code 32 Bits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-code-64-bits" class="md-nav__link">
+    Le Code 64 Bits
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#derniere-pensee" class="md-nav__link">
+    Dernière Pensée
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ressources" class="md-nav__link">
+    Ressources
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-current-cpu-number" class="md-nav__link">
+    Get Current CPU Number
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#obtain-the-local-apic-entries" class="md-nav__link">
+    Obtain the Local APIC Entries
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-initialization" class="md-nav__link">
+    Pre-Initialization
+  </a>
+  
+    <nav class="md-nav" aria-label="Pre-Initialization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gdt-idt" class="md-nav__link">
+    GDT + IDT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stack" class="md-nav__link">
+    Stack
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trampoline-code" class="md-nav__link">
+    Trampoline Code
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jump-address" class="md-nav__link">
+    Jump address
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page-table-for-the-future-cpus" class="md-nav__link">
+    Page table for the future CPUs
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#loading-the-cpu" class="md-nav__link">
+    Loading the CPU
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#le-code-du-trampoline" class="md-nav__link">
+    Le Code Du Trampoline
+  </a>
+  
+    <nav class="md-nav" aria-label="Le Code Du Trampoline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#le-code-16-bits" class="md-nav__link">
+    Le Code 16-Bits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-code-32-bits" class="md-nav__link">
+    Le Code 32 Bits
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-code-64-bits" class="md-nav__link">
+    Le Code 64 Bits
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#derniere-pensee" class="md-nav__link">
+    Dernière Pensée
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ressources" class="md-nav__link">
+    Ressources
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/caelwithcats/devse-documentation-en/edit/master/docs/x86_64/Tutorials/SMP/SMP.md" title="Editer cette page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="symmetric-multi-processing">Symmetric Multi Processing</h1>
+<h2 id="introduction">Introduction</h2>
+<p>What is SMP?</p>
+<p>The SMP stands for symmetric multi processing</p>
+<p>We use this term to mean multi processor. A kernel that supports SMP can have a huge performance boost. Knowing that <strong>generally</strong> processors have 2 threads per cpu, for an 8 core processor we have 16 exploitable threads.</p>
+<p>The SMP is different from NUMA, the NUMA processors are processors where some cores do not have access to all of the memory.</p>
+<p>In this tutorial to implement the smp we take into account that you have already implemented in your kernel:</p>
+<ul>
+<li><a href="devse-documentation-en/x86_64/Structures/IDT">IDT</a></li>
+<li><a href="devse-documentation-en/x86_64/Structures/GDT">GDT</a></li>
+<li><a href="devse-documentation-en/x86_64/Devices/MADT">MADT</a></li>
+<li><a href="devse-documentation-en/x86_64/Devices/LAPIC">LAPIC</a></li>
+<li><a href="devse-documentation-en/x86_64/Devices/APIC">APIC</a></li>
+<li>paging</li>
+<li>Your kernel is higher half</li>
+<li>Your kernel is 64-bit</li>
+<li>A timer system</li>
+</ul>
+<p>You will be necessary to implement the interrupt [APIC] (devse-documentation-en/x86_64/Devices/APIC) for the other CPUs, which is not covered in this tutorial (for now)</p>
+<h2 id="get-current-cpu-number">Get Current CPU Number</h2>
+<p>Obtaining the current CPU number will be very important for later.</p>
+<p>to obtain the identifier number of the current CPU we must use the <a href="devse-documentation-en/x86_64/Devices/APIC">APIC</a></p>
+<p>we must read in the apic at register 20
+then we must shift the bits to 24</p>
+<pre><code class="language-cpp">// LAPIC_REGISTER = 20
+uint32_t get_current_processor_id()
+{
+    return apic::read(LAPIC_REGISTER) &gt;&gt; 24;
+}
+</code></pre>
+<h2 id="obtain-the-local-apic-entries">Obtain the Local APIC Entries</h2>
+<p>see: <a href="devse-documentation-en/x86_64/Devices/LAPIC/">LAPIC</a></p>
+<p>To start the SMP you have to get the LAPIC entries from the MADT table</p>
+<p>Each cpu has a LAPIC entry.
+The number of cpu is therefore the number of LAPICs in the MADT.</p>
+<p>LAPIC input 2 is important</p>
+<p><strong>ACPI_ID</strong>: used for acpi</p>
+<p>and</p>
+<p><strong>APIC_ID</strong>: used for APIC, during initialization</p>
+<p><strong>usually ACPI_ID and APIC_ID are equal</strong></p>
+<p>it must be taken into account that the main cpu (the one that is booted at startup) is also in the list.
+We must then separate this entry by comparing if the number of the current cpu is equal to the cpu number of the local APIC entry</p>
+<pre><code class="language-cpp">if(get_current_processor_id() == lapic_entry.apic_id)
+{
+    // then it's the main cpu
+}
+else
+{
+    // a cpu that we can use!
+}
+</code></pre>
+<h2 id="pre-initialization">Pre-Initialization</h2>
+<p>Before initializing the cpu, the ground must be prepared.</p>
+<p>You have to prepare where you will place the IDT/page tables/GDT/ initialization code of your cpu</p>
+<p>we will place everything like this:</p>
+<table>
+<thead>
+<tr>
+<th>entry</th>
+<th>address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>trampoline code</td>
+<td>0x1000</td>
+</tr>
+<tr>
+<td>stack</td>
+<td>0x570</td>
+</tr>
+<tr>
+<td>gdt</td>
+<td>0x580</td>
+</tr>
+<tr>
+<td>idt</td>
+<td>0x590</td>
+</tr>
+<tr>
+<td>table page</td>
+<td>0x600</td>
+</tr>
+<tr>
+<td>jump address</td>
+<td>0x610</td>
+</tr>
+</tbody>
+</table>
+<p>You should know that it will later change the FDT and the page table, all this is temporary and must be replaced, the stack, the GDT, and the page table.</p>
+<h4 id="gdt-idt">GDT + IDT</h4>
+<p>To store the GDT and the IDT is simple
+we can just use 64-bit instructions</p>
+<p>sgdt</p>
+<p>sidt</p>
+<p>These instructions allow to store the GDT and the IDT in a precise address.</p>
+<p>so</p>
+<pre><code class="language-intel">sgdt [0x580] ; GDT storage
+sidt [0x590] ; IDT storage
+</code></pre>
+<h4 id="stack">Stack</h4>
+<p>for the stack we must store a valid <strong>address</strong> at 0x570</p>
+<pre><code class="language-cpp">POKE(570) = stack_address + stack_size;
+</code></pre>
+<h4 id="trampoline-code">Trampoline Code</h4>
+<p>For the trampoline code you need assembly code delimited by</p>
+<p>__trampoline_start and __trampoline_end</p>
+<p>You will have to copy the trampline code from 0x1000 to the size of the trampoline.</p>
+<p>donc </p>
+<pre><code class="language-cpp">// knowing that TRAMPOLINE_START == 0x1000
+uint64_t trampoline_len = (uint64_t)&amp;trampoline_end - (uint64_t)&amp;trampoline_start;
+
+memcpy((void *)TRAMPOLINE_START, &amp;trampoline_start, trampoline_len);
+</code></pre>
+<p>and in the assembly code:</p>
+<pre><code class="language-asm">trampoline_start:
+
+    ; trampoline code
+
+trampoline_end:
+</code></pre>
+<h4 id="jump-address">Jump address</h4>
+<p>The jump address is the function that the cpu will call after its initialization</p>
+<h4 id="page-table-for-the-future-cpus">Page table for the future CPUs</h4>
+<p>The page table can be a copy of the current CPU page table</p>
+<p>but if it is a copy then after the initialization of the cpu try to give a copy and not keep the current table.</p>
+<p>after having done all this we can go to the initialization of the CPU</p>
+<h2 id="loading-the-cpu">Loading the CPU</h2>
+<p>avant il faut demander à l'apic de charger le cpu </p>
+<p>il faut faire écrire au 2 registre de commande d'interruption (aussi appelé ICR)</p>
+<p>il faut écrire au ICR1  (aka registre 0x300)
+0b10100000000 (0x500)</p>
+<p>cela veut dire d'envoyer l'interruption d'initialisation au cpu dans ICR2</p>
+<p>il faut écrire au ICR2 l'id du processeur shifter de 24</p>
+<p>on a donc </p>
+<pre><code class="language-cpp">write(icr2, (apic_id &lt;&lt; 24));
+write(icr1, 0x500);
+</code></pre>
+<p><strong>ensuite il faut attendre 10 ms</strong> pour que le cpu s'initialise</p>
+<p>on doit ensuite envoyer à l'apic l'addresse du trampoline pour demander au cpu d'aller en 0x1000</p>
+<p>il faut envoyer comme la première étape le apic_id
+(apic_id &lt;&lt; 24)
+mais il faut envoyer à l'icr1
+le bit 11 et 10 pour demander aux cpu de charger la page envoyé du trampoline donc  (0x600)</p>
+<pre><code class="language-cpp">
+write(icr2, (apic_id &lt;&lt; 24));
+write(icr1, 0x600 | ((uint32_t)trampoline_addr / 4096));
+</code></pre>
+<p>maintenant vous pouvez commencer à coder le code du trampoline ! </p>
+<h2 id="le-code-du-trampoline">Le Code Du Trampoline</h2>
+<p>note: pour débugger vous pouvez utiliser ce code </p>
+<pre><code class="language-asm">mov al, 'a'
+mov dx, 0x3F8
+out dx, al
+</code></pre>
+<p>le code output le charactère a dans le port com0
+c'est utile temporairement pour debugger, c'est la solution la plus courte est simple. Bien sûr le code est temporaire</p>
+<p>pour le trampoline il faut savoir que le cpu est initialisé en 16bit, il faut donc le passer comme ceci </p>
+<p>16bit =&gt; 32bit =&gt; 64bit </p>
+<p>on doit donc faire comme ceci</p>
+<pre><code class="language-asm">[bits 16]
+trampoline_start:
+
+trampoline_16:
+    ;...
+
+[bits 32]
+trampoline_32:
+    ;...
+
+[bits 64]
+trampoline_64:
+    ;...
+
+trampoline_end:
+</code></pre>
+<h4 id="le-code-16-bits">Le Code 16-Bits</h4>
+<p>pour passer de 16bit à 32bit il faut initialiser une gdt et mettre le bit 0 du cr0 à 1 pour activer le protected mode</p>
+<pre><code class="language-asm">    cli ; désactiver les interrupt
+    mov ax, 0x0 ; mettre tout à 0
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov ss, ax
+</code></pre>
+<p><strong>pour le chargement de la gdt</strong></p>
+<p>il faut que avant le trampoline_end il y ait une structure de gdt pour le 16bit</p>
+<p>il faut alors : </p>
+<pre><code class="language-asm">align 16
+gdt_16:
+    dw gdt_16_end - gdt_16_start - 1
+    dd gdt_16_start - trampoline_start + TRAMPOLINE_BASE
+
+align 16
+gdt_16_start:
+    ; null selector 0x0
+    dq 0
+    ; cs selector 8
+    dq 0x00CF9A000000FFFF
+    ; ds selector 16
+    dq 0x00CF92000000FFFF
+gdt_16_end:
+</code></pre>
+<p>et dans le code on peut faire</p>
+<pre><code class="language-asm">    lgdt [gdt_16 - trampoline_start + TRAMPOLINE_BASE]
+</code></pre>
+<p>il faut ensuite faire</p>
+<pre><code class="language-asm">    mov eax, cr0
+    or al, 0x1
+    mov cr0, eax
+</code></pre>
+<p>et pour finir on peut jump dans le code 32bit</p>
+<pre><code>    jmp 0x8:(trampoline32 - trampoline_start + TRAMPOLINE_BASE)
+</code></pre>
+<p>le jmp 0x8:...</p>
+<p>permet de dire de loader le segment de code de la gdt</p>
+<h4 id="le-code-32-bits">Le Code 32 Bits</h4>
+<p>il faut commencer par charger la table de page dans le cr3</p>
+<pre><code class="language-asm">mov eax, dword [0x600]
+mov cr3, eax
+</code></pre>
+<p>et ensuite activer le paging, et le PAE du cr4</p>
+<p>en mettant les bit 5 et 7 du registre cr4</p>
+<pre><code class="language-asm">mov eax, cr4
+or eax, 1 &lt;&lt; 5
+or eax, 1 &lt;&lt; 7
+mov cr4, eax
+</code></pre>
+<p>il faut ensuite activer le long mode en écrivant le bit 8 du MSR de l'EFER
+(L'extended Feature Enable Register)</p>
+<pre><code class="language-asm">    mov ecx, 0xc0000080 ; registre efer
+    rdmsr
+
+    or eax,1 &lt;&lt; 8 
+    wrmsr
+</code></pre>
+<p>il faut, ensuite activer le paging dans le registre cr0 en activant le bit 31</p>
+<pre><code>    mov eax, cr0
+    or eax, 1 &lt;&lt; 31
+    mov cr0, eax
+</code></pre>
+<p>pour finir on doit charger une gdt 64bit </p>
+<p>Il faut donc avoir une structure gdt avant le trampoline end</p>
+<pre><code class="language-asm">
+align 16
+gdt_64:
+    dw gdt_64_end - gdt_64_start - 1
+    dd gdt_64_start - trampoline_start + TRAMPOLINE_BASE
+
+align 16
+gdt_64_start:
+    ; null selector 0x0
+    dq 0
+    ; cs selector 8
+    dq 0x00AF98000000FFFF
+    ; ds selector 16
+    dq 0x00CF92000000FFFF
+gdt_64_end:
+</code></pre>
+<p>et donc charget la gdt </p>
+<pre><code class="language-asm">
+lgdt [gdt_64 - trampoline_start + TRAMPOLINE_BASE]
+
+</code></pre>
+<p>et pour passer au 64bit on doit jump comme ceci </p>
+<pre><code>    jmp 8:(trampoline64 - trampoline_start + TRAMPOLINE_BASE)
+</code></pre>
+<p>ceci met le code segment à 8 </p>
+<h4 id="le-code-64-bits">Le Code 64 Bits</h4>
+<p>en 64 bit il faut setup les registres ds/ss/es/ par rapport à votre gdt </p>
+<pre><code>    mov ax, 0x10
+    mov ds, ax
+    mov es, ax
+    mov ss, ax
+    mov ax, 0x0
+    mov fs, ax
+    mov gs, ax
+</code></pre>
+<p>il faut ensuite charger la gdt/ et l'idt
+par rapport au addresse de stockage utilisé </p>
+<pre><code>lgdt [0x580]
+lidt [0x590]
+</code></pre>
+<p>on doit aussi charger la stack</p>
+<pre><code>mov rsp, [0x570]
+mov rbp, 0x0
+</code></pre>
+<p>on doit ensuite passer du code copié du trempoline au code physique 
+donc on doit faire</p>
+<pre><code>    jmp virtual_code
+
+virtual_code:
+</code></pre>
+<p>dans le virtual code on doit activer certains bit de cr4 et cr0
+<strong>si vous voulez le sse, vous devez l'activer ici</strong></p>
+<p>il faut donc activer le bit 1 et désactiver le 2 du registre cr0 pour le monitoring du multi processor et l'émulation </p>
+<pre><code>    mov rax, cr0
+    btr eax, 2
+    bts eax, 1
+    mov cr0, rax
+</code></pre>
+<p>il faut pour terminer l'initialisation du smp faire</p>
+<pre><code>    mov rax, [0x610]
+    jmp rax
+</code></pre>
+<p>maintenant vous avez un cpu d'initialisé ! </p>
+<h2 id="derniere-pensee">Dernière Pensée</h2>
+<p>mais il reste encore beaucoup de chose à faire !
+un système de lock, mettre à jour le multitasking, initialiser les cpu avec une gdt/idt/... unique etc...</p>
+<h2 id="ressources">Ressources</h2>
+<ul>
+<li><a href="https://software.intel.com/content/www/us/en/develop/articles/intel-sdm.html">manuel intel</a></li>
+<li><a href="https://wiki.osdev.org/Main_Page">osdev</a></li>
+</ul>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../../First%20steps/08-Epilogue/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Précédent
+                </span>
+                08 Epilogue
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Creative Commons Attribution 2.0 France
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://discord.com/invite/3XjkM6q" target="_blank" rel="noopener" title="discord.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M297.216 243.2c0 15.616-11.52 28.416-26.112 28.416-14.336 0-26.112-12.8-26.112-28.416s11.52-28.416 26.112-28.416c14.592 0 26.112 12.8 26.112 28.416zm-119.552-28.416c-14.592 0-26.112 12.8-26.112 28.416s11.776 28.416 26.112 28.416c14.592 0 26.112-12.8 26.112-28.416.256-15.616-11.52-28.416-26.112-28.416zM448 52.736V512c-64.494-56.994-43.868-38.128-118.784-107.776l13.568 47.36H52.48C23.552 451.584 0 428.032 0 398.848V52.736C0 23.552 23.552 0 52.48 0h343.04C424.448 0 448 23.552 448 52.736zm-72.96 242.688c0-82.432-36.864-149.248-36.864-149.248-36.864-27.648-71.936-26.88-71.936-26.88l-3.584 4.096c43.52 13.312 63.744 32.512 63.744 32.512-60.811-33.329-132.244-33.335-191.232-7.424-9.472 4.352-15.104 7.424-15.104 7.424s21.248-20.224 67.328-33.536l-2.56-3.072s-35.072-.768-71.936 26.88c0 0-36.864 66.816-36.864 149.248 0 0 21.504 37.12 78.08 38.912 0 0 9.472-11.52 17.152-21.248-32.512-9.728-44.8-30.208-44.8-30.208 3.766 2.636 9.976 6.053 10.496 6.4 43.21 24.198 104.588 32.126 159.744 8.96 8.96-3.328 18.944-8.192 29.44-15.104 0 0-12.8 20.992-46.336 30.464 7.68 9.728 16.896 20.736 16.896 20.736 56.576-1.792 78.336-38.912 78.336-38.912z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../../assets/javascripts/vendor.6a3d08fc.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.71201edf.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copier dans le presse-papier", "clipboard.copied": "Copi\u00e9 dans le presse-papier", "search.config.lang": "fr", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Rechercher", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      
+      <script>
+        app = initialize({
+          base: "../../../..",
+          features: ['instant'],
+          search: Object.assign({
+            worker: "../../../../assets/javascripts/worker/search.4ac00218.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+      
+        <script src="../../../../javascripts/config.js"></script>
+      
+    
+  </body>
+</html>
