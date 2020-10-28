@@ -1,7 +1,7 @@
 # DEVSE wiki english translation
 This is a forked version of https://github.com/developpement-systeme-exploitation/documentation to add english
 
-This guide is available at [caelwithcats.github.io/documentation](https://developpement-systeme-exploitation.github.io/documentation/).
+This guide is available at [caelwithcats.github.io/documentation](https://caelwithcats.github.io/documentation).
 
 ## Licence
 The original license
