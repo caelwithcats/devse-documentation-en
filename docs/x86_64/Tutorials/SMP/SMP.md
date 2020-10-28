@@ -2,36 +2,36 @@
 
 ## Introduction
 
-Qu'est ce que le smp ? 
+What is SMP?
 
-Le smp veut dire symmetric multi processing
+The SMP stands for symmetric multi processing
 
-On utilise ce terme pour dire multi processeur. Un kernel qui supporte le smp peut avoir d'énorme boost de performance. En sachant que __générallement__ les processeur ont 2 thread par cpu, pour un processeur à 8 coeur on a 16 thread exploitable. 
+We use this term to mean multi processor. A kernel that supports SMP can have a huge performance boost. Knowing that __generally__ processors have 2 threads per cpu, for an 8 core processor we have 16 exploitable threads.
 
-Le smp est différent de NUMA, les processeur numa sont des processeur où certains coeur n'ont pas accès à toute la mémoire. 
+The SMP is different from NUMA, the NUMA processors are processors where some cores do not have access to all of the memory.
 
-Dans ce tutoriel pour implémenter le smp nous prenons en compte que vous avez déjà implémenté dans votre kernel : 
+In this tutorial to implement the smp we take into account that you have already implemented in your kernel:
 
-- [IDT](documentation/x86_64/structures/IDT/)
-- [GDT](documentation/x86_64/structures/GDT/)
-- [MADT](documentation/x86_64/périphériques/MADT/)
-- [LAPIC](documentation/x86_64/périphériques/LAPIC/)
-- [APIC](documentation/x86_64/périphériques/APIC/)
+- [IDT](devse-documentation-en/x86_64/Structures/IDT)
+- [GDT](devse-documentation-en/x86_64/Structures/GDT)
+- [MADT](devse-documentation-en/x86_64/Devices/MADT)
+- [LAPIC](devse-documentation-en/x86_64/Devices/LAPIC)
+- [APIC](devse-documentation-en/x86_64/Devices/APIC)
 - paging
-- votre kernel soit higher half
-- votre kernel soit 64bit
-- un système de timer pour attendre 
+- Your kernel is higher half
+- Your kernel is 64-bit
+- A timer system
 
-il faut aussi savoir qu'il faudrat implémenter les interruption [APIC](documentation/x86_64/périphériques/APIC/) pour les autres cpu, ce qui n'est pas abordé dans ce tutoriel (pour l'instant)
+You will be necessary to implement the interrupt [APIC] (devse-documentation-en/x86_64/Devices/APIC) for the other CPUs, which is not covered in this tutorial (for now)
 
-## Obtenir Le Numéro Du CPU Actuel
+## Get Current CPU Number
 
-obtenir le numero du cpu actuel est très important pour plus tard.
+Obtaining the current CPU number will be very important for later.
 
-pour obtenir l'identifiant/numéro du cpu actuel on doit utiliser l'[APIC](documentation/x86_64/périphériques/APIC/)
+to obtain the identifier number of the current CPU we must use the [APIC](devse-documentation-en/x86_64/Devices/APIC)
 
-on doit lire dans l'apic au registre 20
-puis on doit shifter les bit à 24 
+we must read in the apic at register 20
+then we must shift the bits to 24
 
 ```cpp
 // LAPIC_REGISTER = 20
@@ -42,121 +42,122 @@ uint32_t get_current_processor_id()
 ```
 
 
-## Obtenir Les Entrees Local APIC
+## Obtain the Local APIC Entries
 
-voir : [LAPIC](documentation/x86_64/périphériques/LAPIC/)
+see: [LAPIC](devse-documentation-en/x86_64/Devices/LAPIC/)
 
-pour commencer le smp il faut obtenir les entrées lapic de la table madt
+To start the SMP you have to get the LAPIC entries from the MADT table
 
-chaque cpu a une entrée LAPIC.
-Le nombre de cpu est donc le nombre de LAPIC dans la MADT.
+Each cpu has a LAPIC entry.
+The number of cpu is therefore the number of LAPICs in the MADT.
 
-l'entrée LAPIC à 2 entrée importante 
+LAPIC input 2 is important
 
-__ACPI_ID__ : utilisé pour l'acpi
+__ACPI_ID__: used for acpi
 
-et 
+and
 
-__APIC_ID__ : utilisé pour l'apic, pendant l'initialisation
+__APIC_ID__: used for APIC, during initialization
 
-__générallement ACPI_ID et APIC_ID sont égaux__
+__usually ACPI_ID and APIC_ID are equal__
 
 
-il faut prendre en compte que le cpu principal (celui qui est booté au démarrage) est aussi dans la liste. 
-Il faut alors séparer cette entré en comparant si le numéro du cpu actuel est égal au numéro cpu de l'entrée local apic
+it must be taken into account that the main cpu (the one that is booted at startup) is also in the list.
+We must then separate this entry by comparing if the number of the current cpu is equal to the cpu number of the local APIC entry
 
 ```cpp
-if(get_current_processor_id() == lapic_entry.apic_id){
-    // alors c'est le cpu principal
-}else{
-    // un cpu que l'on peut utiliser !
+if(get_current_processor_id() == lapic_entry.apic_id)
+{
+    // then it's the main cpu
+}
+else
+{
+    // a cpu that we can use!
 }
 ```
 
-## Pre-Initialisation
+## Pre-Initialization
 
-avant d'initialiser les cpu, il faut préparer le terrain. 
+Before initializing the cpu, the ground must be prepared.
 
-Il faut préparer ou vous aller placer l'idt/table_de_page/gdt/code d'initialisation/... de votre cpu 
+You have to prepare where you will place the IDT/page tables/GDT/ initialization code of your cpu
 
-nous allons tout placer comme ceci : 
+we will place everything like this:
 
-|entrée|addresse|
-|----|-----|
-|code du trampoline| 0x1000| 
-|stack | 0x570 |
-|gdt | 0x580|
-|idt | 0x590|
-|page table | 0x600 |
-| address de jump | 0x610 |
+| entry | address |
+| ---- | ----- |
+| trampoline code | 0x1000 |
+| stack | 0x570 |
+| gdt | 0x580 |
+| idt | 0x590 |
+| table page | 0x600 |
+| jump address | 0x610 |
 
-il faut savoir qu'il faudrat plus tard changer la fdt et la table de page, tout ceci est temporaire et devra être remplacé, la stack, la gdt, et la table de page.
+You should know that it will later change the FDT and the page table, all this is temporary and must be replaced, the stack, the GDT, and the page table.
 
 #### GDT + IDT
-pour stocker la gdt, et l'idt c'est simple 
-on peut juste utiliser les instruction 64bit 
+To store the GDT and the IDT is simple
+we can just use 64-bit instructions
 
 sgdt
 
 sidt
 
-ces instruction permettent de stocker la gdt et l'idt dans un addresse précise.
+These instructions allow to store the GDT and the IDT in a precise address.
 
-alors
+so
 
 ```intel
-sgdt [0x580] ; stockage de la gdt
-sidt [0x590] ; stockage de l'idt
+sgdt [0x580] ; GDT storage
+sidt [0x590] ; IDT storage
 ```
 #### Stack
 
-pour la stack on doit stocker une __addresse__ valide en 0x570
+for the stack we must store a valid __address__ at 0x570
 
 ```cpp
 POKE(570) = stack_address + stack_size;
 ```
 
-#### Code Du Trampoline
+#### Trampoline Code
 
-pour le code du trampoline il faut du code assembly délimité par 
+For the trampoline code you need assembly code delimited by
 
-__trampoline_start et __trampoline_end
+__trampoline_start and __trampoline_end
 
-
-
-il faudrat copier le code du trampline de 0x1000 à la taille du trampoline.
+You will have to copy the trampline code from 0x1000 to the size of the trampoline.
 
 donc 
 
 ```cpp
-// en sachant que TRAMPOLINE_START == 0x1000
+// knowing that TRAMPOLINE_START == 0x1000
 uint64_t trampoline_len = (uint64_t)&trampoline_end - (uint64_t)&trampoline_start;
     
 memcpy((void *)TRAMPOLINE_START, &trampoline_start, trampoline_len);
 ```
-et dans le code assembly : 
+and in the assembly code:
 
 ```asm
 trampoline_start:
 
-    ; code du trampoline
+    ; trampoline code
 
 trampoline_end:
 ```
 
-#### Addresse de jump
+#### Jump address
 
-L'addresse de jump est la fonction que le cpu vas appeller après son initialisation
+The jump address is the function that the cpu will call after its initialization
 
-#### Table de page pour le futur cpu
+#### Page table for the future CPUs
 
-la table de page peut être une copie de la table de page du cpu actuel 
+The page table can be a copy of the current CPU page table
 
-mais si c'est une copie il faut alors après l'initialisation du cpu essayer de donner une copie et non garder la table actuel.
+but if it is a copy then after the initialization of the cpu try to give a copy and not keep the current table.
 
-après avoir fait tout ceci on peut passer à l'initialisation du cpu 
+after having done all this we can go to the initialization of the CPU
 
-## Chargement du cpu
+## Loading the CPU
 
 avant il faut demander à l'apic de charger le cpu 
 

@@ -1,7 +1,7 @@
-# Titre de l'article
+# Article title
 
 ## Introduction
 
-## Ressources
+## Resources
 
-## Rédacteurs
+## Editors

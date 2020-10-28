@@ -1,7 +1,7 @@
 site_name: DEVSE - Wiki
 copyright: Creative Commons Attribution 2.0 France
 site_description: Documentation de DEVSE
-repo_url: https://github.com/DEV-SE-FR/documentation-dev-se-fr
+repo_url: https://github.com/caelwithcats/devse-documentation-en
 theme:
   name: material
   language: fr
